@@ -1,0 +1,116 @@
+@extends('layout')
+
+@section('title', 'Modifier activite')
+
+@section('content')
+
+<div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto px-0">
+                <div id="sidebar" class="collapse collapse-horizontal show border-end">
+                    <div id="sidebar-nav" class="list-group border-0 rounded-0 text-sm-start min-vh-100">
+                        @if($role === 'admin')
+                        <a href="{{ route('communes.index') }}" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"> <span>Espace communes</span> </a>
+                        <a href="{{ route('associations.index') }}" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"> <span>Expace associations</span></a>
+                        <a href="{{ route('users.all') }}" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"> <span>Espace utilisateurs</span></a>
+                        <a href="{{ route('gestionnaires.index') }}" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"> <span>Espace gestionnaires</span></a>
+                        @endif
+                        @if($role === 'admin' || $role === 'gestionnaire')
+                        <a href="{{ route('tuteurs.index') }}" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"> <span>Espace tuteurs</span></a>
+                        <a href="{{ route('chef_familles.index') }}" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"> <span>Espace Parent</span></a>
+                        <a href="{{ route('familles.index') }}" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"> <span>Espace  familles</span></a>
+                        @endif
+                        
+                        <a href="{{ route('inscriptions.index') }}" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"> <span>Espace inscriptions</span></a>
+                        <a href="{{ route('absences.index') }}" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"> <span>Espace Absences</span></a>
+                        <a href="{{ route('enfants.index') }}" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"> <span>Espace  enfants</span></a>
+                        <a href="{{ route('activites.index') }}" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"> <span>Espace  activites</span></a>
+                        <a href="{{ route('creneaus.index') }}" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"> <span>Espace  creneaus</span></a>
+                        
+
+                    </div>
+                </div>
+            </div>
+            <main class="col ps-md-2 pt-2">
+                <div class="container">
+                <!-- content -->
+                <main class="login-form">
+    <div class="cotainer">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card">
+                    <h3 class="card-header text-center">Modifier activite</h3>
+                    <div class="card-body">
+                         @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div><br />
+                           @endif
+        <form action="{{ route('activites.update', $activite->id)}}" method="post" style="display: inline-block">
+        @csrf
+        @method('PUT')
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div><br />
+                    @endif
+                    <div class="form-group mb-3">
+                        <input value="{{ $activite->titre }}" type="text" placeholder="Titre" id="titre" class="form-control" name="titre" required
+                            autofocus>
+                        @if ($errors->has('titre'))
+                        <span class="text-danger">{{ $errors->first('titre') }}</span>
+                        @endif
+                    </div>
+                    <div class="form-group mb-3">
+                        <input value="{{ $activite->description }}" type="text" placeholder="Description" id="description" class="form-control" name="description" required
+                            autofocus>
+                        @if ($errors->has('description'))
+                        <span class="text-danger">{{ $errors->first('description') }}</span>
+                        @endif
+                    </div>
+                    <div class="form-group mb-3">
+                        <input value="{{ $activite->prix }}" type="text" placeholder="Prix" id="prix" class="form-control" name="prix" required
+                            autofocus>
+                        @if ($errors->has('prix'))
+                        <span class="text-danger">{{ $errors->first('prix') }}</span>
+                        @endif
+                    </div>
+                    <div class="form-group mb-3">
+                        <input value="{{ $activite->capacite }}" type="text" placeholder="Capacite" id="capacite" class="form-control" name="capacite" required
+                            autofocus>
+                        @if ($errors->has('capacite'))
+                        <span class="text-danger">{{ $errors->first('capacite') }}</span>
+                        @endif
+                    </div>
+
+                    <div>
+                      <label for="association_id">Association:</label>
+                      <select name="association_id" id="association_id">
+                      @foreach($associations as $association)
+                      <option value="{{$association->id}}">{{$association->titre}}</option>                                       
+                      @endforeach
+                      </select>
+                    </div>
+                    <button class="btn btn-danger btn-sm"" type="submit">Creer</button>   
+                  </form>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+            </div>
+            </main>
+        </div>
+    </div>
+
+@endsection
